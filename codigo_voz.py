@@ -5,7 +5,7 @@ import os #biblioteca para interagir com o sistema operacional // remover o arqu
 
 resposta = ""
 r = sr.Recognizer() # criar um objeto de reconhecimento
-r.pause_threshold = 1.0 #define uma pausa de 1 segundo para parar a execução
+r.pause_threshold = 0.7 #define uma pausa de 1 segundo para parar a execução
 r.phrase_threshold = 0.3 #qualquer fala que dure menos que 0,3 segundos é descartada
 
 def falar(texto):
@@ -17,7 +17,7 @@ def falar(texto):
     except Exception as e:
         print(f"Erro ao gerar ou reproduzir o áudio: {e}")
 
-falar("Trala la la. Oi, me chamo TicTac! Como posso te ajudar?")
+falar("Oi, me chamo TicTac! Como posso te ajudar?")
 
 while True:
     with sr.Microphone() as source: # capturar áudio do microfone
@@ -36,7 +36,10 @@ while True:
                 break  # Sai do loop while True
 
             elif "bom dia" in text_lower:
-                resposta = "Bom dia, tudo bem?"
+                resposta = "Bom dia, como vai?"
+                falar(resposta)
+            elif "tudo bem" in text_lower:
+                resposta = "Tudo bem sim, e com você?"
                 falar(resposta)
             elif "boa tarde" in text_lower:
                 resposta = "Olá, boa tarde, como vai?"
@@ -44,11 +47,8 @@ while True:
             elif "boa noite" in text_lower:    
                 resposta ="Tenha uma boa noite"
                 falar(resposta)
-            elif "batimentos" in text_lower:
-                resposta = "Vamos checar seus batimentos"
-                falar(resposta)
             else:
-                resposta = "Você disse:" + text
+                resposta = "Que bom saber disso!"
                 falar(resposta)
 
 
