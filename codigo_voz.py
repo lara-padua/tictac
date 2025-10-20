@@ -18,7 +18,6 @@ def falar(texto):
         print(f"Erro ao gerar ou reproduzir o áudio: {e}")
 
 falar("Oi, me chamo TicTac! Como posso te ajudar?")
-
 while True:
     with sr.Microphone() as source: # capturar áudio do microfone
         print("Ouvindo...")
@@ -38,18 +37,49 @@ while True:
             elif "bom dia" in text_lower:
                 resposta = "Bom dia, como vai?"
                 falar(resposta)
-            elif "tudo bem" in text_lower:
-                resposta = "Tudo bem sim, e com você?"
+            elif "mimosa" in text_lower:
+                resposta = "Na verdade não me chamo Tictac, sou o Pablo Escobar disfarçado"
                 falar(resposta)
+                arquivo_musica = "pablo.mp3"
+                if os.path.exists(arquivo_musica):
+                    try:
+                        print(f"Tocando: {arquivo_musica}")
+                        # Toca o arquivo de música
+                        playsound3.playsound(arquivo_musica)
+                        break
+                    except Exception as e:
+                        print(f"Erro ao tocar a música: {e}")
+                        falar("Desculpe, tive um problema para tocar a música.")
+                else:
+                    # Se não encontrar o arquivo, avisa o usuário
+                    print(f"Erro: arquivo '{arquivo_musica}' não encontrado.")
+                    falar(f"Eu adoraria, mas não encontrei o arquivo {arquivo_musica} na pasta.")
+
             elif "boa tarde" in text_lower:
                 resposta = "Olá, boa tarde, como vai?"
                 falar(resposta)
             elif "boa noite" in text_lower:    
                 resposta ="Tenha uma boa noite"
                 falar(resposta)
+            elif "dançar" in text_lower:
+                falar("Claro!Vamos dançar!")
+                arquivo_musica = "balaomagico.mp3"
+                if os.path.exists(arquivo_musica):
+                    try:
+                        print(f"Tocando: {arquivo_musica}")
+                        # Toca o arquivo de música
+                        playsound3.playsound(arquivo_musica)
+                    except Exception as e:
+                        print(f"Erro ao tocar a música: {e}")
+                        falar("Desculpe, tive um problema para tocar a música.")
+                else:
+                    # Se não encontrar o arquivo, avisa o usuário
+                    print(f"Erro: arquivo '{arquivo_musica}' não encontrado.")
+                    falar(f"Eu adoraria, mas não encontrei o arquivo {arquivo_musica} na pasta.")
             else:
                 resposta = "Que bom saber disso!"
                 falar(resposta)
+                break
 
 
         except sr.UnknownValueError:
