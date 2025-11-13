@@ -84,13 +84,13 @@ def texto_para_numero(frase):
     return hora, minuto
 
 
-def alarme(hora, minuto, som="alarme-sansumg.mp3"):
+def alarme(hora, minuto, som="/home/beatriz/Documents/tictac_ws/src/segundo_pacote/alarme-samsung.mp3"):
     """Função que monitora o tempo e dispara o alarme na hora certa."""
-    falar(f"⏰ Alarme ativado para {hora:02d} horas e {minuto:02d} minutos. Pode relaxar!")
+    falar(f"Alarme ativado para {hora:02d}:{minuto:02d}. Pode relaxar!")
     while True:
         agora = datetime.datetime.now()
         if agora.hour == hora and agora.minute == minuto:
-            falar("⏰ Está na hora! Alarme tocando!")
+            falar("Está na hora! Alarme tocando!")
             if os.path.exists(som):
                 # O playsound pode bloquear, então é melhor rodá-lo em uma thread separada
                 # para que a assistente possa continuar falando, se necessário.
@@ -99,7 +99,6 @@ def alarme(hora, minuto, som="alarme-sansumg.mp3"):
                 falar(f"Aviso: Arquivo de som do alarme '{som}' não foi encontrado.")
             break
         time.sleep(5) # Verificando a cada 5 segundos é suficiente e mais leve.
-
 
 def definir_alarme():
     """Função principal que gerencia a conversa para definir o alarme."""
@@ -110,14 +109,14 @@ def definir_alarme():
             recognizer.adjust_for_ambient_noise(source, duration=0.5)
             try:
                 # É uma boa prática colocar o listen() dentro do try/except também
-                audio = recognizer.listen(source, timeout=10, phrase_time_limit=15)
+                audio = recognizer.listen(source, timeout=10, phrase_time_limit=10)
             except sr.WaitTimeoutError:
                 falar("Eu não ouvi nada. Se quiser definir um alarme, é só falar.")
                 continue
 
         try:
             resposta = recognizer.recognize_google(audio, language='pt-BR')
-            print(f"🗣️ Você disse: {resposta}")
+            print(f"Você disse: {resposta}")
 
             hora, minuto = texto_para_numero(resposta)
             
@@ -126,14 +125,14 @@ def definir_alarme():
                 falar(f"O horário {hora} e {minuto} não parece válido. Vamos tentar de novo.")
                 continue
 
-            falar(f"Você quer definir o alarme para {hora:02d}:{minuto:02d}? Diga sim ou não.")
+            falar(f"Você quer definir o alarme para {hora:02d}:{minuto:02d}?")
             with sr.Microphone() as confirm_source:
                 print("Ouvindo confirmação...")
                 recognizer.adjust_for_ambient_noise(confirm_source, duration=0.5)
                 confirm_audio = recognizer.listen(confirm_source, timeout=5, phrase_time_limit=3)
                 confirm_text = recognizer.recognize_google(confirm_audio, language='pt-BR').lower()
 
-            if "sim" in confirm_text or "isso" in confirm_text or "confirmo" in confirm_text:
+            if "sim" in confirm_text or "isso" in confirm_text or "confirmo" in confirm_text or "quero" in confirm_text:
                 threading.Thread(target=alarme, args=(hora, minuto)).start()
                 break
             elif "não" in confirm_text or "nao" in confirm_text:
@@ -155,6 +154,6 @@ def definir_alarme():
 
 
 # 🚀 Código principal
-falar("Olá! Vamos definir um alarme por voz.\n Diga o horário nesse modelo: 'oito horas e trinta minutos'.")
+falar("Olá! Vamos definir um alarme por voz.\n Diga o horário!.")
 definir_alarme()
-falar("Até mais!")
+
