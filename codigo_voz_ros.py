@@ -5,7 +5,7 @@ import rospy
 from std_msgs.msg import String
 import speech_recognition as sr
 from gtts import gTTS
-import playsound3
+import subprocess
 import os
 
 class VoiceAssistantNode:
@@ -63,11 +63,19 @@ class VoiceAssistantNode:
         rospy.loginfo("TicTac respondendo: " + texto)
         try:
             self.assistant_response_pub.publish(texto)
-            audio_fala = 'fala_assistente.mp3'
+
+            audio_fala = "/tmp/fala.mp3"
             tts = gTTS(text=texto, lang='pt-br')
             tts.save(audio_fala)
-            playsound3.playsound(audio_fala)
+
+            subprocess.run(
+                ["mpg123", "-q", audio_fala],
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL
+            )
+
             os.remove(audio_fala)
+
         except Exception as e:
             rospy.logerr(f"Erro ao gerar ou reproduzir a fala: {e}")
 
@@ -75,8 +83,14 @@ class VoiceAssistantNode:
     def tocar_musica(self, nome_arquivo):
         if os.path.exists(nome_arquivo):
             try:
-                rospy.loginfo(f"Tocando: {nome_arquivo}")
-                playsound3.playsound(nome_arquivo)
+                rospy.loginfo(f"Tocando música: {nome_arquivo}")
+
+                subprocess.run(
+                    ["mpg123", "-q", nome_arquivo],
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL
+                )
+
             except Exception as e:
                 rospy.logerr(f"Erro ao tocar a música '{nome_arquivo}': {e}")
                 self.falar("Desculpe, tive um problema para tocar a música.")
@@ -84,6 +98,7 @@ class VoiceAssistantNode:
             rospy.logwarn(f"Erro: arquivo '{nome_arquivo}' não encontrado.")
             self.falar(f"Eu adoraria, mas não encontrei o arquivo de música necessário.")
 
+    
     def listen_and_process(self):
         # Esta função agora só será chamada se self.is_active for True
         with sr.Microphone() as source:
