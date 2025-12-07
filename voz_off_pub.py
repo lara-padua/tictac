@@ -27,21 +27,24 @@ class TicTacVoiceMaster:
             "dia":          ["bomdia.mp3",   "BOM_DIA"],
             "tarde":        ["boatarde.mp3", "BOA_TARDE"],
             "noite":        ["boanoite.mp3", "BOA_NOITE"],
-            "mimosa":       ["escobar.mp3",  "MIMOSA"],
-            "grupo b":      ["sirigueijo.mp3", "GRUPO_B"],
+            "grupo b":      ["siri.mp3", "SAMBA"],
             
             # Comandos de acao 
-            "dancar":       ["dancar.mp3",   "DANCAR"],
-            "andar":        ["andar.mp3",    "ANDAR"],
+            "samba":        ["samba.mp3",   "SAMBA"],
+            "frente":       ["andar.mp3",    "ANDAR"],
+            "direita":      ["andar.mp3",    "DIREITA"],
+            "esquerda":     ["andar.mp3",    "ESQUERDA"],
             
+
             # Comandos de saida
             "tchau":        ["tchau.mp3",    "DESATIVAR"],
             "encerrar":     ["tchau.mp3",    "DESATIVAR"],
-            "sair":         ["tchau.mp3",    "DESATIVAR"],
+            "para":         ["tchau.mp3",    "DESATIVAR"],
             
             # Comandos extras do seu primeiro codigo
             "mimosa":        ["escobar.mp3",  "PABLO"],
             "cade":          ["capixaba.mp3",  "CAPIXABA"],
+            "presidente":    ["Tibas.mp3",  "SAMBA"],
         }
 
         self.audio_ativacao = "oitictac.mp3"
