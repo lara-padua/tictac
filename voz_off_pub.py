@@ -18,7 +18,7 @@ class TicTacVoiceMaster:
         self.audio_path = rospy.get_param('~audio_path', '/home/sirigueijo/siricascudo_ws/src/aborgue/audios')
         
         # Variavel de controle: Comeca 'dormindo'
-        self.ativo = False
+        self.ativo = True
 
         # --- 2. MAPA MESTRE (Ouvido -> Som + Comando ROS) ---
         # ATENCAO: Todas as chaves em minusculo e SEM ACENTO
@@ -51,7 +51,7 @@ class TicTacVoiceMaster:
 
         # --- 3. COMUNICACAO ROS ---
         self.pub = rospy.Publisher('/comandos', String, queue_size=10)
-        self.sub = rospy.Subscriber('/color_detected', String, self.callback_cor)
+       # self.sub = rospy.Subscriber('/color_detected', String, self.callback_cor)
 
         # --- 4. CONFIGURACAO VOSK ---
         rospy.loginfo("Carregando modelo Vosk...")
@@ -144,10 +144,10 @@ class TicTacVoiceMaster:
                             self.tocar_audio(arquivo_som)
 
                             # 3. Verifica se e para desligar
-                            if comando_ros == "DESATIVAR":
-                                rospy.loginfo("Desativando sistema...")
-                                self.ativo = False
-                                rospy.sleep(1.0)
+                            #if comando_ros == "DESATIVAR":
+                             #   rospy.loginfo("Desativando sistema...")
+                              #  self.ativo = False
+                               # rospy.sleep(1.0)
                         
             except IOError:
                 pass
